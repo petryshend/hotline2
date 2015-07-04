@@ -8,3 +8,6 @@ HOTLINE_URLS = [
 if __name__ == '__main__':
     hotline_crawler = HotlineCrawler(HOTLINE_URLS)
     hotline_crawler.crawl()
+    print hotline_crawler.min_price
+    print hotline_crawler.max_price
+    print hotline_crawler.crawled_date

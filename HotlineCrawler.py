@@ -1,10 +1,15 @@
 import bs4
 import requests
+import datetime
 
 class HotlineCrawler:
 
     def __init__(self, hotline_urls):
         self.hotline_urls = hotline_urls
+        self.min_price = 0
+        self.max_price = 0
+        self.crawled_date = ''
+        self.page_html = ''
 
     def get_price_string(self, url):
         """
@@ -12,8 +17,8 @@ class HotlineCrawler:
         it as string
         :return: string
         """
-        r = requests.get(url)
-        soup = bs4.BeautifulSoup(r.text, 'html.parser')
+        self.page_html = requests.get(url)
+        soup = bs4.BeautifulSoup(self.page_html.text, 'html.parser')
         price_all = soup.find_all('span', {'class': 'prc'})[0]
         price_range = price_all.find_all('a', {'class': 'g_statistic'})[0]
 
@@ -37,6 +42,8 @@ class HotlineCrawler:
 
         return result
 
+
     def crawl(self):
         for url in self.hotline_urls:
-            print self.get_price_string(url)
+            self.min_price, self.max_price = self.get_price_range_as_int(self.get_price_string(url))
+            self.crawled_date = datetime.datetime.now()
