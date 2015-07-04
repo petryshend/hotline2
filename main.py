@@ -19,6 +19,24 @@ def get_price_string(url):
     return price_range.get_text()
 
 
+def get_price_range_as_int(price):
+    """
+    Convert price range string to ints
+    :param price:
+    :return: mix and max price in array
+    """
+    splitted = price.split(u'\u2013')
+    result = []
+    for i, el in enumerate(splitted):
+        num_string = []
+        for ch in el:
+            if ch.isdigit():
+                num_string.append(ch)
+        result.append(int(''.join(num_string)))
+
+    return result
+
 if __name__ == '__main__':
     for url in URLS:
-        print get_price_string(url)
+        price_string = get_price_string(url)
+        print get_price_range_as_int(price_string)
